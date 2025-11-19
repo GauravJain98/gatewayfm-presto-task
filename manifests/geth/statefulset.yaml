@@ -49,6 +49,7 @@ spec:
         - --http.port=8545
         - --http.api=eth,web3,net
         - --http.corsdomain=*
+        - --http.vhosts=*
         - --ws
         - --ws.addr=0.0.0.0
         - --ws.port=8546

@@ -53,7 +53,13 @@ data:
       "coinbase": "0x0000000000000000000000000000000000000000",
       "alloc": {
         "0x62358b29b9e3e70ff51D88766e41a339D3e8FFff": {
-          "balance": "0x56bc75e2d63100000" # 100 ETH
+          "balance": "0x56bc75e2d63100000"
+        },
+        "0x51d9ec850a515495f1ff808cfd99315095ac3d25": {
+          "balance": "0x56bc75e2d63100000"
+        },
+        "0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1": {
+          "balance": "0x56bc75e2d63100000"
         }
       },
       "number": "0x0",
