@@ -1,0 +1,33 @@
+persistence:
+  type: pvc
+  enabled: true
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: prometheus
+        type: prometheus
+        access: proxy
+        url: http://mimir-helm-monolithic-headless.monitoring.svc.cluster.local:8080/prometheus
+        orgId: 1
+        basicAuth: false
+        isDefault: true
+        jsonData:
+          cacheLevel: Medium
+          defaultEditor: code
+          httpHeaderName1: X-Scope-OrgID
+          httpMethod: POST
+          prometheusType: Mimir
+          prometheusVersion: 2.9.1
+        secureJsonData:
+          httpHeaderValue1: HAVEN
