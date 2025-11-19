@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: geth-devnet
+  labels:
+    app: geth-devnet
+spec:
+  serviceName: geth-devnet-headless
+  replicas: 1
+  selector:
+    matchLabels:
+      app: geth-devnet
+  template:
+    metadata:
+      labels:
+        app: geth-devnet
+    spec:
+      initContainers:
+      - name: geth-init
+        image: ethereum/client-go:latest
+        command: ["geth"]
+        args:
+        - --datadir=/data
+        - init
+        - /genesis/genesis.json
+        volumeMounts:
+        - name: geth-data
+          mountPath: /data
+        - name: genesis-config
+          mountPath: /genesis
+      containers:
+      - name: geth
+        image: ethereum/client-go:latest
+        ports:
+        - containerPort: 8545
+          name: rpc
+        - containerPort: 8546
+          name: ws
+        - containerPort: 30303
+          name: p2p
+        command:
+        - geth
+        args:
+        - --datadir=/data
+        - --dev
+        - --dev.period=6
+        - --http
+        - --http.addr=0.0.0.0
+        - --http.port=8545
+        - --http.api=eth,web3,net
+        - --http.corsdomain=*
+        - --ws
+        - --ws.addr=0.0.0.0
+        - --ws.port=8546
+        - --ws.api=eth,web3,net
+        - --ws.origins=*
+        volumeMounts:
+        - name: geth-data
+          mountPath: /data
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+      volumes:
+      - name: genesis-config
+        configMap:
+          name: geth-genesis-config
+  volumeClaimTemplates:
+  - metadata:
+      name: geth-data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 10Gi

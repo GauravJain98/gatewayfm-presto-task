@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: geth-devnet-service
+spec:
+  selector:
+    app: geth-devnet
+  ports:
+  - name: rpc
+    port: 8545
+    targetPort: 8545
+    protocol: TCP
+  - name: ws
+    port: 8546
+    targetPort: 8546
+    protocol: TCP
+  - name: p2p
+    port: 30303
+    targetPort: 30303
+    protocol: TCP
+  type: ClusterIP

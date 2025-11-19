@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: geth-genesis-config
+data:
+  genesis.json: |
+    {
+      "config": {
+        "chainId": 4141,
+        "homesteadBlock": 0,
+        "eip150Block": 0,
+        "eip155Block": 0,
+        "eip158Block": 0,
+        "byzantiumBlock": 0,
+        "constantinopleBlock": 0,
+        "petersburgBlock": 0,
+        "istanbulBlock": 0,
+        "muirGlacierBlock": 0,
+        "berlinBlock": 0,
+        "londonBlock": 0,
+        "arrowGlacierBlock": 0,
+        "grayGlacierBlock": 0,
+        "shanghaiTime": 0,
+        "cancunTime": 0,
+        "pragueTime": 0,
+        "osakaTime": 0,
+        "terminalTotalDifficulty": 0,
+        "depositContractAddress": "0x0000000000000000000000000000000000000000",
+        "blobSchedule": {
+          "cancun": {
+            "target": 3,
+            "max": 6,
+            "baseFeeUpdateFraction": 3338477
+          },
+          "prague": {
+            "target": 6,
+            "max": 9,
+            "baseFeeUpdateFraction": 5007716
+          },
+          "osaka": {
+            "target": 6,
+            "max": 9,
+            "baseFeeUpdateFraction": 5007716
+          }
+        }
+      },
+      "nonce": "0x0",
+      "timestamp": "0x0",
+      "extraData": "0x",
+      "gasLimit": "0xaf79e0",
+      "difficulty": "0x0",
+      "mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "coinbase": "0x0000000000000000000000000000000000000000",
+      "alloc": {
+        "0x62358b29b9e3e70ff51D88766e41a339D3e8FFff": {
+          "balance": "0x56bc75e2d63100000" # 100 ETH
+        }
+      },
+      "number": "0x0",
+      "gasUsed": "0x0",
+      "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "baseFeePerGas": "0x3b9aca00",
+      "excessBlobGas": null,
+      "blobGasUsed": null
+    }
