@@ -45,8 +45,6 @@ spec:
               value: "http://geth-devnet-service.geth:8545"
             - name: TARGET_TPS
               value: "15"
-            - name: CONCURRENCY
-              value: "20"
             - name: METRICS_PORT
               value: "8080"
             - name: TEST_DURATION

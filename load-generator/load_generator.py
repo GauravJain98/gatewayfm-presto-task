@@ -53,13 +53,13 @@ class LoadGeneratorConfig:
 
     geth_url: str = "http://localhost:8545"
     target_tps: float = 10.0
-    concurrency: int = 10
     metrics_port: int = 8080
     test_duration: int = 3600  # 1 hour
     private_key: str = os.getenv(
         "PRIVATE_KEY",
         "0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d",
     )
+    signed_tx_hex: Optional[str] = os.getenv("SIGNED_TX_HEX")
     gas_limit: int = 21000
     gas_price: int = 20 * 10**9  # 20 Gwei
 
@@ -318,7 +318,6 @@ def main():
     config = LoadGeneratorConfig(
         geth_url=os.getenv("GETH_URL", "http://localhost:8545"),
         target_tps=float(os.getenv("TARGET_TPS", "10")),
-        concurrency=int(os.getenv("CONCURRENCY", "10")),
         metrics_port=int(os.getenv("METRICS_PORT", "8080")),
         test_duration=int(os.getenv("TEST_DURATION", "3600")),
     )
