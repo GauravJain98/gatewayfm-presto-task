@@ -21,9 +21,11 @@ spec:
         image: ethereum/client-go:latest
         command: ["geth"]
         args:
-        - --datadir=/data
         - init
         - /genesis/genesis.json
+        env:
+        - name: GETH_DATADIR
+          value: "/data"
         volumeMounts:
         - name: geth-data
           mountPath: /data
@@ -39,23 +41,35 @@ spec:
           name: ws
         - containerPort: 30303
           name: p2p
-        command:
-        - geth
-        args:
-        - --datadir=/data
-        - --dev
-        - --dev.period=6
-        - --http
-        - --http.addr=0.0.0.0
-        - --http.port=8545
-        - --http.api=eth,web3,net
-        - --http.corsdomain=*
-        - --http.vhosts=*
-        - --ws
-        - --ws.addr=0.0.0.0
-        - --ws.port=8546
-        - --ws.api=eth,web3,net
-        - --ws.origins=*
+        env:
+        - name: GETH_DATADIR
+          value: "/data"
+        - name: GETH_DEV
+          value: "true"
+        - name: GETH_DEV_PERIOD
+          value: "6"
+        - name: GETH_HTTP
+          value: "true"
+        - name: GETH_HTTP_ADDR
+          value: "0.0.0.0"
+        - name: GETH_HTTP_PORT
+          value: "8545"
+        - name: GETH_HTTP_API
+          value: "eth,web3,net"
+        - name: GETH_HTTP_CORSDOMAIN
+          value: "*"
+        - name: GETH_HTTP_VHOSTS
+          value: "*"
+        - name: GETH_WS
+          value: "true"
+        - name: GETH_WS_ADDR
+          value: "0.0.0.0"
+        - name: GETH_WS_PORT
+          value: "8546"
+        - name: GETH_WS_API
+          value: "eth,web3,net"
+        - name: GETH_WS_ORIGINS
+          value: "*"
         volumeMounts:
         - name: geth-data
           mountPath: /data
