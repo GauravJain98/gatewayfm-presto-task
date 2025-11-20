@@ -82,7 +82,7 @@ jobs:
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
-        git tag -a ${{ steps.semver.outputs.tag }} -m "Release ${{ steps.semver.outputs.tag }}"
+        git tag -a ${{ steps.semver.outputs.version }} -m "Release ${{ steps.semver.outputs.version }}"
         git push origin ${{ steps.semver.outputs.tag }}
 
   build-and-push:
