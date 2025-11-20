@@ -1,3 +1,4 @@
+adminPassword: password
 persistence:
   type: pvc
   enabled: true
@@ -6,8 +7,8 @@ persistence:
   size: 10Gi
 resources:
   limits:
-    cpu: 100m
-    memory: 128Mi
+    cpu: 500m
+    memory: 512Mi
   requests:
     cpu: 100m
     memory: 128Mi
@@ -15,19 +16,36 @@ datasources:
   datasources.yaml:
     apiVersion: 1
     datasources:
-      - name: prometheus
+      - orgId: 1
+        name: prometheus
         type: prometheus
+        typeName: Prometheus
         access: proxy
-        url: http://mimir-helm-monolithic-headless.monitoring.svc.cluster.local:8080/prometheus
-        orgId: 1
+        url: http://prometheus-server.monitoring.svc.cluster.local
         basicAuth: false
         isDefault: true
         jsonData:
-          cacheLevel: Medium
-          defaultEditor: code
-          httpHeaderName1: X-Scope-OrgID
           httpMethod: POST
-          prometheusType: Mimir
-          prometheusVersion: 2.9.1
-        secureJsonData:
-          httpHeaderValue1: HAVEN
+          timeInterval: 5s
+
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+      - name: "ethereum"
+        orgId: 1
+        folder: ""
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/ethereum
+
+dashboardsConfigMaps:
+  ethereum: "ethereum-dashboard"
+
+# https://github.com/grafana/helm-charts/issues/3699
+initChownData:
+  securityContext:
+    capabilities:
+      drop: []
