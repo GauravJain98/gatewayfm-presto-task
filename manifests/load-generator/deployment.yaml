@@ -25,66 +25,66 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
       containers:
-      - name: load-generator
-        image: ghcr.io/gauravjain98/gatewayfm-loadgenerator:v2.2
-        imagePullPolicy: Always
-        securityContext:
-          runAsNonRoot: true
-          runAsUser: 1000
-          runAsGroup: 1000
-          readOnlyRootFilesystem: true
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-            - ALL
-        ports:
-        - containerPort: 8080
-          name: metrics
-        env:
-        - name: GETH_URL
-          value: "http://geth-devnet-service.geth:8545"
-        - name: TARGET_TPS
-          value: "15"
-        - name: CONCURRENCY
-          value: "20"
-        - name: METRICS_PORT
-          value: "8080"
-        - name: TEST_DURATION
-          value: "3600"
-        - name: PRIVATE_KEY
-          valueFrom:
-            secretKeyRef:
-              name: eth-load-generator-secret
-              key: PRIVATE_KEY
-        volumeMounts:
-        - name: tmp
-          mountPath: /tmp
-        - name: var-run
-          mountPath: /var/run
-        resources:
-          requests:
-            memory: "128Mi"
-            cpu: "100m"
-            ephemeral-storage: "1Gi"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-            ephemeral-storage: "2Gi"
-        livenessProbe:
-          httpGet:
-            path: /metrics
-            port: 8080
-          initialDelaySeconds: 30
-          periodSeconds: 30
-        readinessProbe:
-          httpGet:
-            path: /metrics
-            port: 8080
-          initialDelaySeconds: 5
-          periodSeconds: 10
+        - name: load-generator
+          image: ghcr.io/gauravjain98/gatewayfm-loadgenerator:v2.2
+          imagePullPolicy: Always
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          ports:
+            - containerPort: 8080
+              name: metrics
+          env:
+            - name: GETH_URL
+              value: "http://geth-devnet-service.geth:8545"
+            - name: TARGET_TPS
+              value: "15"
+            - name: CONCURRENCY
+              value: "20"
+            - name: METRICS_PORT
+              value: "8080"
+            - name: TEST_DURATION
+              value: "3600"
+            - name: PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: eth-load-generator-secret
+                  key: PRIVATE_KEY
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: var-run
+              mountPath: /var/run
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+              ephemeral-storage: "1Gi"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+              ephemeral-storage: "2Gi"
+          livenessProbe:
+            httpGet:
+              path: /metrics
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
       volumes:
-      - name: tmp
-        emptyDir: {}
-      - name: var-run
-        emptyDir: {}
+        - name: tmp
+          emptyDir: {}
+        - name: var-run
+          emptyDir: {}
       automountServiceAccountToken: false

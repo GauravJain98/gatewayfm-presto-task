@@ -17,78 +17,78 @@ spec:
         app: geth-devnet
     spec:
       initContainers:
-      - name: geth-init
-        image: ethereum/client-go:latest
-        command: ["geth"]
-        args:
-        - init
-        - /genesis/genesis.json
-        env:
-        - name: GETH_DATADIR
-          value: "/data"
-        volumeMounts:
-        - name: geth-data
-          mountPath: /data
-        - name: genesis-config
-          mountPath: /genesis
+        - name: geth-init
+          image: ethereum/client-go:latest
+          command: ["geth"]
+          args:
+            - init
+            - /genesis/genesis.json
+          env:
+            - name: GETH_DATADIR
+              value: "/data"
+          volumeMounts:
+            - name: geth-data
+              mountPath: /data
+            - name: genesis-config
+              mountPath: /genesis
       containers:
-      - name: geth
-        image: ethereum/client-go:latest
-        ports:
-        - containerPort: 8545
-          name: rpc
-        - containerPort: 8546
-          name: ws
-        - containerPort: 30303
-          name: p2p
-        env:
-        - name: GETH_DATADIR
-          value: "/data"
-        - name: GETH_DEV
-          value: "true"
-        - name: GETH_DEV_PERIOD
-          value: "6"
-        - name: GETH_HTTP
-          value: "true"
-        - name: GETH_HTTP_ADDR
-          value: "0.0.0.0"
-        - name: GETH_HTTP_PORT
-          value: "8545"
-        - name: GETH_HTTP_API
-          value: "eth,web3,net"
-        - name: GETH_HTTP_CORSDOMAIN
-          value: "*"
-        - name: GETH_HTTP_VHOSTS
-          value: "*"
-        - name: GETH_WS
-          value: "true"
-        - name: GETH_WS_ADDR
-          value: "0.0.0.0"
-        - name: GETH_WS_PORT
-          value: "8546"
-        - name: GETH_WS_API
-          value: "eth,web3,net"
-        - name: GETH_WS_ORIGINS
-          value: "*"
-        volumeMounts:
-        - name: geth-data
-          mountPath: /data
+        - name: geth
+          image: ethereum/client-go:latest
+          ports:
+            - containerPort: 8545
+              name: rpc
+            - containerPort: 8546
+              name: ws
+            - containerPort: 30303
+              name: p2p
+          env:
+            - name: GETH_DATADIR
+              value: "/data"
+            - name: GETH_DEV
+              value: "true"
+            - name: GETH_DEV_PERIOD
+              value: "6"
+            - name: GETH_HTTP
+              value: "true"
+            - name: GETH_HTTP_ADDR
+              value: "0.0.0.0"
+            - name: GETH_HTTP_PORT
+              value: "8545"
+            - name: GETH_HTTP_API
+              value: "eth,web3,net"
+            - name: GETH_HTTP_CORSDOMAIN
+              value: "*"
+            - name: GETH_HTTP_VHOSTS
+              value: "*"
+            - name: GETH_WS
+              value: "true"
+            - name: GETH_WS_ADDR
+              value: "0.0.0.0"
+            - name: GETH_WS_PORT
+              value: "8546"
+            - name: GETH_WS_API
+              value: "eth,web3,net"
+            - name: GETH_WS_ORIGINS
+              value: "*"
+          volumeMounts:
+            - name: geth-data
+              mountPath: /data
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+      volumes:
+        - name: genesis-config
+          configMap:
+            name: geth-genesis-config
+  volumeClaimTemplates:
+    - metadata:
+        name: geth-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
         resources:
           requests:
-            memory: "512Mi"
-            cpu: "250m"
-          limits:
-            memory: "2Gi"
-            cpu: "1000m"
-      volumes:
-      - name: genesis-config
-        configMap:
-          name: geth-genesis-config
-  volumeClaimTemplates:
-  - metadata:
-      name: geth-data
-    spec:
-      accessModes: ["ReadWriteOnce"]
-      resources:
-        requests:
-          storage: 10Gi
+            storage: 10Gi
