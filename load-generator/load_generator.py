@@ -30,7 +30,7 @@ transaction_latency = Histogram('eth_transaction_latency_seconds', 'Transaction 
 rpc_latency = Histogram('eth_rpc_latency_seconds', 'RPC request latency in seconds', ['method'])
 current_tps = Gauge('eth_current_tps', 'Current transactions per second')
 current_rps = Gauge('eth_current_rps', 'Current RPC requests per second')
-current_mgas_per_second = Gauge('eth_current_mgas_per_second', 'Current Million gas per second')
+current_mgas_per_second = Gauge('eth_current_mgas_per_second', 'Current million gas per second')
 gas_used_total = Counter('eth_gas_used_total', 'Total gas used')
 block_number_gauge = Gauge('eth_block_number', 'Current block number')
 block_time_gauge = Gauge('eth_block_time_seconds', 'Time between blocks')
@@ -231,9 +231,11 @@ class EthereumLoadGenerator:
         # Calculate rates
         tx_diff = self.tx_count - self.last_tx_count
         rpc_diff = self.rpc_count - self.last_rpc_count
+        gas_diff = self.gas_used - self.last_gas_used
 
         tps = tx_diff / time_diff
         rps = rpc_diff / time_diff
+        mgas_per_sec = (gas_diff / 1000000) / time_diff
 
         # Update Prometheus gauges
 
@@ -254,27 +256,25 @@ class EthereumLoadGenerator:
         self.last_tx_success_count = self.tx_success_count
         self.last_tx_failure_count = self.tx_failure_count
         self.last_rpc_count = self.rpc_count
+        self.last_gas_used = self.gas_used
 
   async def block_monitor(self):
     """Monitor block production"""
     while True:
       try:
-        result = await self.rpc_call("eth_getBlockReceipts")
-        block_number = int(result["blockNumber"], 16)
-  
+        result = await self.rpc_call("eth_blockNumber")
+        block_number = int(result, 16)
+
         if block_number != self.last_block_number:
           current_time = time.time()
           if self.last_block_number > 0:
             block_time = current_time - self.last_block_time
             block_time_gauge.set(block_time)
-          
-          mgas_per_sec = (gas_diff / 1000000) / block_time
-          self.gas_used = int(result["cumulativeGasUsed"], 16)
-          gas_diff = self.gas_used - self.last_gas_used
+
           block_number_gauge.set(block_number)
+          self.current_block_number = block_number  # Update current block for labels
           self.last_block_number = block_number
           self.last_block_time = current_time
-          self.last_gas_used = self.gas_used
 
         await asyncio.sleep(1)
 
