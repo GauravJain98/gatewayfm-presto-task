@@ -2,3 +2,19 @@ server:
   global:
     scrape_interval: 6s
     scrape_timeout: 2s
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 4Gi
+      ephemeral-storage: 10Gi
+    requests:
+      cpu: 128m
+      memory: 500Mi
+      ephemeral-storage: 1Gi
+
+alertmanager:
+  enabled: false
+prometheus-pushgateway:
+  enabled: false
+prometheus-node-exporter:
+  enabled: false
