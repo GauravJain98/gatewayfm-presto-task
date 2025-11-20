@@ -26,7 +26,7 @@ spec:
         fsGroup: 1000
       containers:
       - name: load-generator
-        image: ghcr.io/gauravjain98/gatewayfm-loadgenerator:v2.1
+        image: ghcr.io/gauravjain98/gatewayfm-loadgenerator:v2.2
         imagePullPolicy: Always
         securityContext:
           runAsNonRoot: true
@@ -42,7 +42,7 @@ spec:
           name: metrics
         env:
         - name: GETH_URL
-          value: "http://geth-devnet-service.default:8545"
+          value: "http://geth-devnet-service.geth:8545"
         - name: TARGET_TPS
           value: "15"
         - name: CONCURRENCY
