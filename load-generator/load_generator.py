@@ -5,13 +5,11 @@ Generates configurable transaction load and exposes metrics for Prometheus
 """
 
 import asyncio
-import json
 import logging
 import os
 import random
 import time
-from concurrent.futures import ThreadPoolExecutor
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any, Dict, Optional
 
 import aiohttp
