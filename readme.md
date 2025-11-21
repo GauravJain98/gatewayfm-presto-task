@@ -153,23 +153,20 @@ From my interpretation of the tasks I implemented the following features:
 
 ### Blockchain Infrastructure
 
-- A simple secure manifests to run the ethereium go client (geth) with a persistance volume
-- I choose a Statefulset as its a stateful application and if we have multiple pods then they should not share a PVC
+- Simple secure manifests to run the Ethereum go client (geth) with a persistence volume
+- I chose a StatefulSet as it's a stateful application and if we have multiple pods they should not share a PVC
 
-### Load testing
+### Load Testing
 
-- A simple python script to use asyncio for concurrency while doing multiple transcations 
-- The script also monitoring the blockchain in the background for simplicity.
-- The private key should ideally be in a secret manger such as Vault or AWS secret manger but i used a kuberntes screts for simplity
-- Due to the single core nature of python the scipt can not do truly high amout of load generator so we have 2 solutions:
-  - Use the prefunded account to fund a new random account, then use that account with this we can increase the number of instances of the deployment and increase the scale
-  - Use a truly multi core language like GO
+- A simple Python script using asyncio for concurrency while doing multiple transactions
+- The script also monitors the blockchain in the background as it made it easier for me to monitor the system
+- The private key should ideally be in a secret manager such as Vault or AWS Secret Manager but I used Kubernetes secrets for simplicity
 
 ### Observability Stack
 
-- I choose Promethus over Mimir due to its simple deployment and 1st party single node helm chart in a producition enviroment it is better to use a horizontible scaling system like mimir or Thanos
-- I used 1st party helm charts for both promethus and grafana but that is the recommened approach
+- I chose Prometheus over Mimir due to its simple deployment and first-party single node helm chart. In a production environment it is better to use a horizontal scaling system like Mimir or Thanos
+- I used first-party helm charts for both Prometheus and Grafana as that is the recommended approach
 
 ### Verification Tools
 
-- Used simple bash script as they can be run without a new enviroment setup
+- Used simple bash scripts as they can be run without a new environment setup
