@@ -169,15 +169,10 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
 
+    - uses: mikefarah/yq@v4.41.1
     - name: Update deployment image
       run: |
-        NEW_IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.version.outputs.version }}"
-
-        # Update the image in the deployment file
-        sed -i "s|image: ghcr.io/gauravjain98/gatewayfm-loadgenerator:.*|image: ${NEW_IMAGE}|g" \
-          manifests/load-generator/deployment.yaml
-
-        echo "Updated image to: ${NEW_IMAGE}"
+        NEW_IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.version.outputs.version }}" yq -i e '.spec.template.spec.containers[0].image = env(NEW_IMAGE)' manifests/load-generator/deployment.yaml
 
     - name: Commit and push changes
       run: |
