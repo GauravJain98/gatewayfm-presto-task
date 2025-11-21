@@ -73,6 +73,28 @@ spec:
           volumeMounts:
             - name: geth-data
               mountPath: /data
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8545
+              httpHeaders:
+              - name: Content-Type
+                value: application/json
+            initialDelaySeconds: 6
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8545
+              httpHeaders:
+              - name: Content-Type
+                value: application/json
+            initialDelaySeconds: 6
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
           resources:
             requests:
               memory: "512Mi"
