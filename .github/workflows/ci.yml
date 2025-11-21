@@ -172,7 +172,8 @@ jobs:
     - uses: mikefarah/yq@v4.41.1
     - name: Update deployment image
       run: |
-        NEW_IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.version.outputs.version }}" yq -i e '.spec.template.spec.containers[0].image = env(NEW_IMAGE)' manifests/load-generator/deployment.yaml
+        PRIMARY_TAG=$(echo "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.version.outputs.version }}" | tr '[:upper:]' '[:lower:]')
+        NEW_IMAGE=$PRIMARY_TAG yq -i e '.spec.template.spec.containers[0].image = env(NEW_IMAGE)' manifests/load-generator/deployment.yaml
 
     - name: Commit and push changes
       run: |
