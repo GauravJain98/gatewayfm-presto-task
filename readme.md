@@ -124,3 +124,52 @@ kind delete cluster --name ethereum-devnet
 ```
 
 ## Architecture and Design Choices
+
+### Features
+
+From my interpretation of the tasks I implemented the following features:
+
+- Blockchain Infrastructure:
+  - Single Ethereum dev node using Geth in developer mode
+  - 6-second block production interval
+  - State persistence between restarts (via PVC)
+  - Prefunded accounts (0x62358b29b9e3e70ff51D88766e41a339D3e8FFff with 100 ETH)
+- Load Testing:
+  - Python workload generator with configurable TPS and concurrency
+  - Load Testing Metrics (TPS, RPS, MGas/s, latency, failure rates)
+- Observability Stack for metrics collection and visualization
+- Infrastructure:
+  - Kubernetes manifests for all components
+  - Kind cluster deployment scripts
+- CI/CD Pipeline:
+  - YAML and Python file linting
+  - Docker image building and pushing to GitHub registry
+- Verification Tools:
+  - Block production verification scripts
+  - Persistence testing scripts
+  - Dashboard access and monitoring setup
+
+### Explanation
+
+### Blockchain Infrastructure
+
+- A simple secure manifests to run the ethereium go client (geth) with a persistance volume
+- I choose a Statefulset as its a stateful application and if we have multiple pods then they should not share a PVC
+
+### Load testing
+
+- A simple python script to use asyncio for concurrency while doing multiple transcations 
+- The script also monitoring the blockchain in the background for simplicity.
+- The private key should ideally be in a secret manger such as Vault or AWS secret manger but i used a kuberntes screts for simplity
+- Due to the single core nature of python the scipt can not do truly high amout of load generator so we have 2 solutions:
+  - Use the prefunded account to fund a new random account, then use that account with this we can increase the number of instances of the deployment and increase the scale
+  - Use a truly multi core language like GO
+
+### Observability Stack
+
+- I choose Promethus over Mimir due to its simple deployment and 1st party single node helm chart in a producition enviroment it is better to use a horizontible scaling system like mimir or Thanos
+- I used 1st party helm charts for both promethus and grafana but that is the recommened approach
+
+### Verification Tools
+
+- Used simple bash script as they can be run without a new enviroment setup
