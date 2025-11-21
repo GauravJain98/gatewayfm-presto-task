@@ -128,21 +128,13 @@ jobs:
           type=raw,value=${{ needs.version.outputs.tag }},enable=${{ needs.version.outputs.tag != '' }}
 
     - name: Check if image exists
+      continue-on-error: true
       id: image-check
       run: |
         PRIMARY_TAG="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.version.outputs.version }}"
-        if [ -n "${{ needs.version.outputs.version }}" ]; then
-          if docker buildx imagetools inspect "${PRIMARY_TAG}" >/dev/null 2>&1; then
-            echo "Image ${PRIMARY_TAG} already exists, skipping build"
-            echo "skip-build=true" >> $GITHUB_OUTPUT
-          else
-            echo "Image ${PRIMARY_TAG} does not exist, proceeding with build"
-            echo "skip-build=false" >> $GITHUB_OUTPUT
-          fi
-        else
-          echo "No version tag, proceeding with build"
-          echo "skip-build=false" >> $GITHUB_OUTPUT
-        fi
+        skip-build=false=1
+        docker buildx imagetools inspect "${PRIMARY_TAG}" || skip-build=true
+        echo "skip-build=${skip-build}" >> $GITHUB_OUTPUT
 
     - name: Set up Docker Buildx
       if: steps.image-check.outputs.skip-build == 'false'
