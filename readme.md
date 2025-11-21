@@ -89,7 +89,10 @@ kubectl port-forward -n monitoring svc/grafana 3000:80
 
 Go to [the dashboard](http://localhost:3000/d/eth-devnet-dashboard/ethereum-devnet-performance-dashboard)
 
+**Grafana Credentials**
+
 Username: `admin`
+
 Password: `password`
 
 ## Commands to Verify 6-Second Block Production and Persistence
@@ -121,6 +124,8 @@ To verify persistence, restart the pod and confirm that the block number does no
 ```
 
 ## Teardown
+
+Kill the port-forward terminal and run the following commands to tear down the system
 
 ```bash
 # Delete applications
