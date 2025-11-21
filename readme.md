@@ -1,5 +1,18 @@
 # GatewayFM Presto Task
 
+## Table of Contents
+
+- [Setup and View Dashboard](#setup-and-view-dashboard)
+  - [Prerequisites](#prerequisites)
+  - [Setup](#setup)
+- [Commands to Verify 6-Second Block Production and Persistence](#commands-to-verify-6-second-block-production-and-persistence)
+  - [6-Second Block Generation](#6-second-block-generation)
+  - [Persistence](#persistence)
+- [Teardown](#teardown)
+- [Architecture and Design Choices](#architecture-and-design-choices)
+  - [Features](#features)
+  - [Explanation](#explanation)
+
 ## Setup and View Dashboard
 
 ### Prerequisites
