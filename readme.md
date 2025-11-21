@@ -166,6 +166,8 @@ From my interpretation of the tasks I implemented the following features:
 
 - I chose Prometheus over Mimir due to its simple deployment and first-party single node helm chart. In a production environment it is better to use a horizontal scaling system like Mimir or Thanos
 - I used first-party helm charts for both Prometheus and Grafana as that is the recommended approach
+- Used a minimal deployment of Prometheus as we do not need additional features like alertmanager, pushgateway etc but in production they should be deployed
+- Reduced the global scrape time (6s) for Prometheus as we are only scraping the python pod. It is better to have a proper config with a higher global scrape interval something like 30s.
 
 ### Verification Tools
 
