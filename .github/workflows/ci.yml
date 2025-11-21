@@ -5,13 +5,13 @@ on:
     branches: [ main, develop ]
     paths-ignore:
       - 'manifests/**'
-      - '*.md'
+      - '**/*.md'
       - 'docs/**'
   pull_request:
     branches: [ main ]
     paths-ignore:
       - 'manifests/**'
-      - '*.md'
+      - '**/*.md'
       - 'docs/**'
 
 env:
