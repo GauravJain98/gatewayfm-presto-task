@@ -132,9 +132,9 @@ jobs:
       id: image-check
       run: |
         PRIMARY_TAG="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.version.outputs.version }}"
-        skip-build=false
-        docker buildx imagetools inspect "${PRIMARY_TAG}" || skip-build=true
-        echo "skip-build=${skip-build}" >> $GITHUB_OUTPUT
+        skip_build=false
+        docker buildx imagetools inspect "${PRIMARY_TAG}" || skip_build=true
+        echo "skip-build=${skip_build}" >> $GITHUB_OUTPUT
 
     - name: Set up Docker Buildx
       if: steps.image-check.outputs.skip-build == 'false'
