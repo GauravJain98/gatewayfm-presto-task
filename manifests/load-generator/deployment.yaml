@@ -26,7 +26,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: load-generator
-          image: ghcr.io/GauravJain98/gatewayfm-presto-task/load-generator:0.1.5
+          image: ghcr.io/GauravJain98/gatewayfm-presto-task/load-generator:0.2.18
           imagePullPolicy: Always
           securityContext:
             runAsNonRoot: true
