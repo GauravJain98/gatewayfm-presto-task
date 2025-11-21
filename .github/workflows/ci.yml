@@ -16,7 +16,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/load-generator
+  IMAGE_NAME: gatewayfm-loadgenerator
 
 jobs:
   lint:
