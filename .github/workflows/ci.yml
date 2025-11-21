@@ -132,7 +132,7 @@ jobs:
       id: image-check
       run: |
         PRIMARY_TAG="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.version.outputs.version }}"
-        skip-build=false=1
+        skip-build=false
         docker buildx imagetools inspect "${PRIMARY_TAG}" || skip-build=true
         echo "skip-build=${skip-build}" >> $GITHUB_OUTPUT
 
