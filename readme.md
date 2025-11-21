@@ -1,6 +1,6 @@
 # GatewayFM Presto Task
 
-## Setup and view dashboard
+## Setup and View Dashboard
 
 ### Prerequisites
 
@@ -48,7 +48,7 @@ helm install grafana grafana/grafana \
   -f manifests/observability/grafana/values.yaml
 ```
 
-3. Deploy Etherum Geth node
+3. Deploy Ethereum Geth Node
 
 ```bash
 kubectl create ns geth
@@ -64,11 +64,11 @@ kubectl create ns load-generator
 kubectl apply -f manifests/load-generator/
 ```
 
-To increase the TPS you can update the `manifests/load-generator/deployment.yaml` `.spec.template.spec.containers[0].env[1].value` i.e the value of the `TARGET_TPS` value
+To increase the TPS, update the `TARGET_TPS` value in `manifests/load-generator/deployment.yaml` at `.spec.template.spec.containers[0].env[1].value`.
 
 5. View Grafana Dashboard
 
-Run the following command
+Run the following command:
 
 ```bash
 kubectl port-forward -n monitoring svc/grafana 3000:80
@@ -76,35 +76,35 @@ kubectl port-forward -n monitoring svc/grafana 3000:80
 
 Go to [the dashboard](http://localhost:3000/d/eth-devnet-dashboard/ethereum-devnet-performance-dashboard)
 
-username: `admin`
-password: `password`
+Username: `admin`
+Password: `password`
 
-## Commands to verify 6-second block production and persistence
+## Commands to Verify 6-Second Block Production and Persistence
 
-### 6-second block generation
+### 6-Second Block Generation
 
-You can verify the block generation in [this panel](http://localhost:3000/d/eth-devnet-dashboard/ethereum-devnet-performance-dashboard?orgId=1&from=now-30m&to=now&timezone=browser&viewPanel=panel-6) of the dashboard
+You can verify block generation in [this panel](http://localhost:3000/d/eth-devnet-dashboard/ethereum-devnet-performance-dashboard?orgId=1&from=now-30m&to=now&timezone=browser&viewPanel=panel-6) of the dashboard.
 
-You can also verify it by running the following script with the port forward in another terminal
+You can also verify it by running the following script with the port forward in another terminal:
 
-Port Forward (The while is there do handle the persistence test)
+Port Forward (the while loop handles the persistence test):
 
 ```bash
-while True; do kubectl port-forward -n geth svc/geth-devnet-service 8545:8545:;done
+while true; do kubectl port-forward -n geth svc/geth-devnet-service 8545:8545; done
 ```
 
-Verify
+Verify:
 
 ```bash
-./blocktime.sh
+./tests/blocktime.sh
 ```
 
 ### Persistence
 
-In order to verify persistence you can restart the pod and see that the block number does not reset, also the same dashboard shows [panel](<http://localhost:3000/d/eth-devnet-dashboard/ethereum-devnet-performance-dashboard?orgId=1&from=now-30m&to=now&timezone=browser&viewPanel=panel-6>) shows the block numbers increasing
+To verify persistence, restart the pod and confirm that the block number does not reset. The dashboard [panel](http://localhost:3000/d/eth-devnet-dashboard/ethereum-devnet-performance-dashboard?orgId=1&from=now-30m&to=now&timezone=browser&viewPanel=panel-6) shows the block numbers continuously increasing.
 
 ```bash
-./persistance.sh
+./tests/persistence.sh
 ```
 
 ## Teardown
@@ -124,4 +124,3 @@ kind delete cluster --name ethereum-devnet
 ```
 
 ## Architecture and Design Choices
-
